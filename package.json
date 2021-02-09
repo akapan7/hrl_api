@@ -1,0 +1,24 @@
+{
+  "name": "test-api",
+  "version": "1.0.0",
+  "description": "My Test API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saraaahh63/test-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saraaahh63/test-api/issues"
+  },
+  "homepage": "https://github.com/saraaahh63/test-api#readme",
+  "dependencies": {
+    "brew": "0.0.8",
+    "json-server": "^0.16.3"
+  }
+}
