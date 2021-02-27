@@ -8,6 +8,23 @@ function download(content, fileName, contentType) {
 }
 
 */
+var checked_in, checked_out; 
+var submit_in = document.getElementById("btn_ch");
+if (submit_in){
+  submit_in.addEventListener("click", function() {
+    checked_in= getCheckBoxValues(".in");
+    localStorage.setItem("checked_in",checked_in);
+    console.log(checked_in);
+  });
+}
+
+var submit_out = document.getElementById("btn_out");
+if (submit_in){
+  submit_out.addEventListener("click", function() {
+   checked_out = getCheckBoxValues(".out");
+    console.log(checked_out);
+  });
+}
 
 
 function export2txt(originalData) {
@@ -20,26 +37,93 @@ function export2txt(originalData) {
   a.click();
   document.body.removeChild(a);
 }
+function makeVisible()
+ {
+  checker('id_ch','id');
+  checker('year_ch','year');
+  checker('dir_ch','dir');
+  checker('nation_ch','nation');
+  checker('first_name_ch','fname');
+  checker('last_name_ch','lname');
+  checker('address_ch','address');
+  
+ }
+ function checker(check,input){
+  if(document.getElementById(check).checked){
+    document.getElementById(input).style.visibility = 'visible';
+}
+else
+{
+    document.getElementById(input).style.visibility = 'hidden';
+}
+}
+function getCheckBoxValues(target){
+  console.log("inside getCheckBoxValues");
+  var checkboxes = document.querySelectorAll(target);
+  var checked = [];
+  for (var i = 0; i < checkboxes.length; i++) {
+    var checkbox = checkboxes[i];
+    if (checkbox.checked) checked.push(checkbox.value);
+  }
+  return checked;
+}
+
+//var appD=   (document.getElementById("app")).value;
+
+            function waitForCondition() {
+  return new Promise(resolve => {
+    
+    function checkFlag() {
+      if (appD!=null) {
+        console.log('met');
+        resolve();
+      } else {
+        window.setTimeout(checkFlag, 30000); 
+      }
+    }
+    checkFlag();
+  });
+}
+
+async function run() {
+  console.log('before');
+  await waitForCondition()
+  console.log('after');
+}
 
 
 function testGS(){
+  document.getElementById("announce").textContent= "Data is loading ^_^";
+
     const url="https://script.google.com/macros/s/AKfycbyVJ1atQPDr7J_SmlrveoZsI0nqXtxVnThOjrx165pUh-rnif9BablI/exec";
     fetch(url).then(d => d.json())
     .then(d => {
       var allData=d[0].data;
-      var par = (document.getElementById("par")).value;
+      console.log(checked_in);
+      //var par = (document.getElementById("par")).value;
       var year=(document.getElementById("year")).value;
       var id=(document.getElementById("id")).value;
       var nation=(document.getElementById("nation")).value;
-      var name=(document.getElementById("name")).value;
+      var fname=(document.getElementById("fname")).value;
+      //var lname=(document.getElementById("lname")).value;
       var address=(document.getElementById("address")).value;
-     
+      var data={"YR":0,"ID":0,"NATION":0,"FNAME":0,"ADDR":0};
+      correctData=allData.filter(function (person) { return person.YR == year && person.NATIONALITY ==nation});
 
+      if (checked_in.includes("YR")) data["YR"]=1;
+      if (checked_in.includes("ID")) data["ID"]=1;
+      if (checked_in.includes("NATION")) data["NATION"]=1;
+      if (checked_in.includes("FNAME")) data["FNAME"]=1;
+      if (checked_in.includes("ADDRESS")) data["ADDRESS"]=1;
+      
+      console.log(checked_in);
+
+      /*
       //document.getElementById("parText").textContent= par;
       var correctData;
       if (par=="ALL"){
         console.log("all");
-        correctData=allData;
+        correctData=d;
       }
       if (par=="YR"){
         console.log("year");
@@ -62,7 +146,7 @@ function testGS(){
         correctData=allData.filter(function (person) { return person.ADDY == address });
       }
       
-
+*/
       //console.log(allData.filter(function (person) { return person.parameter == "1920" }));
       var jsonOut = JSON.stringify(correctData);
 
@@ -75,6 +159,13 @@ function testGS(){
       dlAnchorElem.setAttribute("download", "out.json");
       dlAnchorElem.click();
       document.getElementById("app").textContent= jsonOut;
+      //run();
+      document.getElementById("announce").textContent= "Data is ready ^_^";
+      document.getElementById("results_btn").style.visibility = 'visible';
+
+
+      localStorage.setItem("output",jsonOut);
+      localStorage.setItem("year",year);
     });
     
     //console.log(d);
@@ -99,7 +190,6 @@ function addGS(){
         body: JSON.stringify({name:"Olivia"}) // body data type must match "Content-Type" header
       });
 }
-
 function clear(){
   document.getElementById("app").textContent= "";
 }

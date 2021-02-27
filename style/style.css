@@ -1,0 +1,32 @@
+#search-box {
+  top: 30%;
+}
+
+fieldset {
+  background-color: whitesmoke;
+  width: 70%;
+}
+#main {
+  display: flex;
+  text-align: center;
+  width: 100%;
+  justify-content: space-around;
+}
+
+#submit {
+  background-color: white;
+}
+#year,
+#app,
+#nation,
+#fname,
+#lname,
+#results_btn,
+#address,
+#id,
+#dir {
+  visibility: hidden;
+}
+#btn_ch {
+  left: 50%;
+}
